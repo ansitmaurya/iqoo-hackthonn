@@ -1,0 +1,1561 @@
+[
+  {
+    "id": "ACC-10000",
+    "accountNumber": "SF-****-1000",
+    "ownerName": "Apex Capital Ltd",
+    "ownerEmail": "apex.capital.ltd@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "FROZEN",
+    "balance": 243990.85,
+    "currency": "USD",
+    "createdAt": "2025-10-06T15:49:24.168Z",
+    "riskScore": 53,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Toronto",
+      "country": "CA",
+      "latitude": 43.6532,
+      "longitude": -79.3832,
+      "ipAddress": "198.51.101.232"
+    },
+    "knownDevices": [
+      "DEV-5RB9CUK",
+      "DEV-4MDZSLG"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 2,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-10137",
+    "accountNumber": "SF-****-1047",
+    "ownerName": "Elena Rostova",
+    "ownerEmail": "elena.rostova@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 36322.44,
+    "currency": "USD",
+    "createdAt": "2026-04-07T15:49:24.169Z",
+    "riskScore": 7,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Sydney",
+      "country": "AU",
+      "latitude": -33.8688,
+      "longitude": 151.2093,
+      "ipAddress": "100.64.0.91"
+    },
+    "knownDevices": [
+      "DEV-JHUOVC8",
+      "DEV-017RCEO"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-10274",
+    "accountNumber": "SF-****-1094",
+    "ownerName": "Marcus Vance",
+    "ownerEmail": "marcus.vance@synthetic-flow.demo",
+    "type": "HIGH_NET_WORTH",
+    "status": "ACTIVE",
+    "balance": 33965.86,
+    "currency": "USD",
+    "createdAt": "2026-03-13T15:49:24.169Z",
+    "riskScore": 9,
+    "historicalAvgAmount": 12500,
+    "historicalStdDevAmount": 5625,
+    "lastKnownLocation": {
+      "city": "Tokyo",
+      "country": "JP",
+      "latitude": 35.6762,
+      "longitude": 139.6503,
+      "ipAddress": "192.88.99.169"
+    },
+    "knownDevices": [
+      "DEV-KC6HNQ4",
+      "DEV-3MFNW1U"
+    ],
+    "tags": [
+      "VIP",
+      "Private Banking"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-10411",
+    "accountNumber": "SF-****-1141",
+    "ownerName": "Quantum Dynamics LLC",
+    "ownerEmail": "quantum.dynamics.llc@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 201587.08,
+    "currency": "USD",
+    "createdAt": "2025-10-06T15:49:24.169Z",
+    "riskScore": 15,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "San Francisco",
+      "country": "US",
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "ipAddress": "192.0.2.143"
+    },
+    "knownDevices": [
+      "DEV-WH4ER7Z",
+      "DEV-W345S3Q"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-10548",
+    "accountNumber": "SF-****-1188",
+    "ownerName": "Sophia Chen",
+    "ownerEmail": "sophia.chen@synthetic-flow.demo",
+    "type": "BUSINESS",
+    "status": "ACTIVE",
+    "balance": 203758.2,
+    "currency": "USD",
+    "createdAt": "2025-08-08T15:49:24.169Z",
+    "riskScore": 25,
+    "historicalAvgAmount": 4500,
+    "historicalStdDevAmount": 2025,
+    "lastKnownLocation": {
+      "city": "Frankfurt",
+      "country": "DE",
+      "latitude": 50.1109,
+      "longitude": 8.6821,
+      "ipAddress": "198.19.0.242"
+    },
+    "knownDevices": [
+      "DEV-0KOJOBC",
+      "DEV-AWO3XC4"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-10685",
+    "accountNumber": "SF-****-1235",
+    "ownerName": "Liam O'Connor",
+    "ownerEmail": "liam.o.connor@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 93043.79,
+    "currency": "USD",
+    "createdAt": "2025-10-14T15:49:24.169Z",
+    "riskScore": 12,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "New York",
+      "country": "US",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "ipAddress": "198.51.100.246"
+    },
+    "knownDevices": [
+      "DEV-QBYTOCX",
+      "DEV-0CCEHV4"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-10822",
+    "accountNumber": "SF-****-1282",
+    "ownerName": "CyberNexus Global",
+    "ownerEmail": "cybernexus.global@synthetic-flow.demo",
+    "type": "HIGH_NET_WORTH",
+    "status": "ACTIVE",
+    "balance": 12456.27,
+    "currency": "USD",
+    "createdAt": "2026-04-08T15:49:24.169Z",
+    "riskScore": 11,
+    "historicalAvgAmount": 12500,
+    "historicalStdDevAmount": 5625,
+    "lastKnownLocation": {
+      "city": "San Francisco",
+      "country": "US",
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "ipAddress": "192.0.2.4"
+    },
+    "knownDevices": [
+      "DEV-ISVECJK",
+      "DEV-3B2I5RK"
+    ],
+    "tags": [
+      "VIP",
+      "Private Banking"
+    ],
+    "totalAlertsCount": 1,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-10959",
+    "accountNumber": "SF-****-1329",
+    "ownerName": "Amina Al-Mansoor",
+    "ownerEmail": "amina.al.mansoor@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 145858.03,
+    "currency": "USD",
+    "createdAt": "2026-04-06T15:49:24.169Z",
+    "riskScore": 67,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Frankfurt",
+      "country": "DE",
+      "latitude": 50.1109,
+      "longitude": 8.6821,
+      "ipAddress": "198.19.0.114"
+    },
+    "knownDevices": [
+      "DEV-662GFIO",
+      "DEV-59CDOFW"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-11096",
+    "accountNumber": "SF-****-1376",
+    "ownerName": "David K. Miller",
+    "ownerEmail": "david.k..miller@synthetic-flow.demo",
+    "type": "MULE_SUSPECT",
+    "status": "FLAGGED",
+    "balance": 19437.05,
+    "currency": "USD",
+    "createdAt": "2026-05-01T15:49:24.169Z",
+    "riskScore": 90,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "London",
+      "country": "GB",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "ipAddress": "203.0.113.37"
+    },
+    "knownDevices": [
+      "DEV-B2PXE0Q",
+      "DEV-JZIV4LB"
+    ],
+    "tags": [
+      "High Risk Mule",
+      "Rapid Cash-Out",
+      "SAR Watchlist"
+    ],
+    "totalAlertsCount": 8,
+    "riskFactors": [
+      "Linked to Smurfing Ring",
+      "Multiple IP Hopping",
+      "Off-Hours Transfers"
+    ]
+  },
+  {
+    "id": "ACC-11233",
+    "accountNumber": "SF-****-1423",
+    "ownerName": "Vortex Imports Inc",
+    "ownerEmail": "vortex.imports.inc@synthetic-flow.demo",
+    "type": "MERCHANT",
+    "status": "ACTIVE",
+    "balance": 147239.91,
+    "currency": "USD",
+    "createdAt": "2025-08-11T15:49:24.169Z",
+    "riskScore": 10,
+    "historicalAvgAmount": 4500,
+    "historicalStdDevAmount": 2025,
+    "lastKnownLocation": {
+      "city": "Sao Paulo",
+      "country": "BR",
+      "latitude": -23.5505,
+      "longitude": -46.6333,
+      "ipAddress": "10.0.1.46"
+    },
+    "knownDevices": [
+      "DEV-CP0KHH9",
+      "DEV-HVZ3X8M"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-11370",
+    "accountNumber": "SF-****-1470",
+    "ownerName": "Carlos Mendez",
+    "ownerEmail": "carlos.mendez@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 163161.75,
+    "currency": "USD",
+    "createdAt": "2026-02-08T15:49:24.169Z",
+    "riskScore": 28,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Sydney",
+      "country": "AU",
+      "latitude": -33.8688,
+      "longitude": 151.2093,
+      "ipAddress": "100.64.0.86"
+    },
+    "knownDevices": [
+      "DEV-AQFBU55",
+      "DEV-IT287E5"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-11507",
+    "accountNumber": "SF-****-1517",
+    "ownerName": "Yuki Takahashi",
+    "ownerEmail": "yuki.takahashi@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 213166.58,
+    "currency": "USD",
+    "createdAt": "2026-01-08T15:49:24.169Z",
+    "riskScore": 23,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Singapore",
+      "country": "SG",
+      "latitude": 1.3521,
+      "longitude": 103.8198,
+      "ipAddress": "198.18.0.72"
+    },
+    "knownDevices": [
+      "DEV-52TUTJ8",
+      "DEV-IPWO1VS"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-11644",
+    "accountNumber": "SF-****-1564",
+    "ownerName": "Nova Horizon LLC",
+    "ownerEmail": "nova.horizon.llc@synthetic-flow.demo",
+    "type": "MULE_SUSPECT",
+    "status": "FLAGGED",
+    "balance": 25374.44,
+    "currency": "USD",
+    "createdAt": "2026-04-28T15:49:24.169Z",
+    "riskScore": 80,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "San Francisco",
+      "country": "US",
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "ipAddress": "192.0.2.141"
+    },
+    "knownDevices": [
+      "DEV-91D1WEN",
+      "DEV-H2FSHG7"
+    ],
+    "tags": [
+      "High Risk Mule",
+      "Rapid Cash-Out",
+      "SAR Watchlist"
+    ],
+    "totalAlertsCount": 3,
+    "riskFactors": [
+      "Linked to Smurfing Ring",
+      "Multiple IP Hopping",
+      "Off-Hours Transfers"
+    ]
+  },
+  {
+    "id": "ACC-11781",
+    "accountNumber": "SF-****-1611",
+    "ownerName": "Claire Dupont",
+    "ownerEmail": "claire.dupont@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 191598.45,
+    "currency": "USD",
+    "createdAt": "2025-08-25T15:49:24.169Z",
+    "riskScore": 23,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "London",
+      "country": "GB",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "ipAddress": "203.0.113.117"
+    },
+    "knownDevices": [
+      "DEV-DLYMPSP",
+      "DEV-4ZV55LG"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-11918",
+    "accountNumber": "SF-****-1658",
+    "ownerName": "Tariq Sterling",
+    "ownerEmail": "tariq.sterling@synthetic-flow.demo",
+    "type": "MULE_SUSPECT",
+    "status": "FLAGGED",
+    "balance": 50067.79,
+    "currency": "USD",
+    "createdAt": "2025-10-26T15:49:24.169Z",
+    "riskScore": 91,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Sydney",
+      "country": "AU",
+      "latitude": -33.8688,
+      "longitude": 151.2093,
+      "ipAddress": "100.64.0.125"
+    },
+    "knownDevices": [
+      "DEV-MU3K3WZ",
+      "DEV-LD4HWRJ"
+    ],
+    "tags": [
+      "High Risk Mule",
+      "Rapid Cash-Out",
+      "SAR Watchlist"
+    ],
+    "totalAlertsCount": 3,
+    "riskFactors": [
+      "Linked to Smurfing Ring",
+      "Multiple IP Hopping",
+      "Off-Hours Transfers"
+    ]
+  },
+  {
+    "id": "ACC-12055",
+    "accountNumber": "SF-****-1705",
+    "ownerName": "Aegis Cloud Corp",
+    "ownerEmail": "aegis.cloud.corp@synthetic-flow.demo",
+    "type": "MERCHANT",
+    "status": "FROZEN",
+    "balance": 232832.05,
+    "currency": "USD",
+    "createdAt": "2026-01-19T15:49:24.169Z",
+    "riskScore": 24,
+    "historicalAvgAmount": 4500,
+    "historicalStdDevAmount": 2025,
+    "lastKnownLocation": {
+      "city": "Sydney",
+      "country": "AU",
+      "latitude": -33.8688,
+      "longitude": 151.2093,
+      "ipAddress": "100.64.0.202"
+    },
+    "knownDevices": [
+      "DEV-ESHN6BU",
+      "DEV-OAEOK0K"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-12192",
+    "accountNumber": "SF-****-1752",
+    "ownerName": "Mateo Rossi",
+    "ownerEmail": "mateo.rossi@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 159140.73,
+    "currency": "USD",
+    "createdAt": "2026-03-01T15:49:24.169Z",
+    "riskScore": 27,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Singapore",
+      "country": "SG",
+      "latitude": 1.3521,
+      "longitude": 103.8198,
+      "ipAddress": "198.18.0.57"
+    },
+    "knownDevices": [
+      "DEV-XPDWA5R",
+      "DEV-9QU1JEH"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-12329",
+    "accountNumber": "SF-****-1799",
+    "ownerName": "Freja Lindqvist",
+    "ownerEmail": "freja.lindqvist@synthetic-flow.demo",
+    "type": "MULE_SUSPECT",
+    "status": "FLAGGED",
+    "balance": 31253.65,
+    "currency": "USD",
+    "createdAt": "2026-01-19T15:49:24.169Z",
+    "riskScore": 95,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Tokyo",
+      "country": "JP",
+      "latitude": 35.6762,
+      "longitude": 139.6503,
+      "ipAddress": "192.88.99.76"
+    },
+    "knownDevices": [
+      "DEV-XWI6PHD",
+      "DEV-Z5LEEPU"
+    ],
+    "tags": [
+      "High Risk Mule",
+      "Rapid Cash-Out",
+      "SAR Watchlist"
+    ],
+    "totalAlertsCount": 6,
+    "riskFactors": [
+      "Linked to Smurfing Ring",
+      "Multiple IP Hopping",
+      "Off-Hours Transfers"
+    ]
+  },
+  {
+    "id": "ACC-12466",
+    "accountNumber": "SF-****-1846",
+    "ownerName": "Hyperion Trade Partners",
+    "ownerEmail": "hyperion.trade.partners@synthetic-flow.demo",
+    "type": "HIGH_NET_WORTH",
+    "status": "ACTIVE",
+    "balance": 205224.77,
+    "currency": "USD",
+    "createdAt": "2026-03-14T15:49:24.169Z",
+    "riskScore": 13,
+    "historicalAvgAmount": 12500,
+    "historicalStdDevAmount": 5625,
+    "lastKnownLocation": {
+      "city": "San Francisco",
+      "country": "US",
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "ipAddress": "192.0.2.99"
+    },
+    "knownDevices": [
+      "DEV-KAINCKU",
+      "DEV-NDBMUPG"
+    ],
+    "tags": [
+      "VIP",
+      "Private Banking"
+    ],
+    "totalAlertsCount": 1,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-12603",
+    "accountNumber": "SF-****-1893",
+    "ownerName": "Zubair Khan",
+    "ownerEmail": "zubair.khan@synthetic-flow.demo",
+    "type": "MULE_SUSPECT",
+    "status": "FLAGGED",
+    "balance": 71014.38,
+    "currency": "USD",
+    "createdAt": "2025-12-30T15:49:24.169Z",
+    "riskScore": 92,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "San Francisco",
+      "country": "US",
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "ipAddress": "192.0.2.150"
+    },
+    "knownDevices": [
+      "DEV-3BBEUYM",
+      "DEV-8LDIYNL"
+    ],
+    "tags": [
+      "High Risk Mule",
+      "Rapid Cash-Out",
+      "SAR Watchlist"
+    ],
+    "totalAlertsCount": 5,
+    "riskFactors": [
+      "Linked to Smurfing Ring",
+      "Multiple IP Hopping",
+      "Off-Hours Transfers"
+    ]
+  },
+  {
+    "id": "ACC-12740",
+    "accountNumber": "SF-****-1940",
+    "ownerName": "Isabella Morales",
+    "ownerEmail": "isabella.morales@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 175872.34,
+    "currency": "USD",
+    "createdAt": "2026-05-30T15:49:24.169Z",
+    "riskScore": 18,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Singapore",
+      "country": "SG",
+      "latitude": 1.3521,
+      "longitude": 103.8198,
+      "ipAddress": "198.18.0.250"
+    },
+    "knownDevices": [
+      "DEV-2BPONIM",
+      "DEV-ND57DR1"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-12877",
+    "accountNumber": "SF-****-1987",
+    "ownerName": "Valeria Petrov",
+    "ownerEmail": "valeria.petrov@synthetic-flow.demo",
+    "type": "MERCHANT",
+    "status": "ACTIVE",
+    "balance": 168785.6,
+    "currency": "USD",
+    "createdAt": "2026-03-10T15:49:24.169Z",
+    "riskScore": 48,
+    "historicalAvgAmount": 4500,
+    "historicalStdDevAmount": 2025,
+    "lastKnownLocation": {
+      "city": "Dubai",
+      "country": "AE",
+      "latitude": 25.2048,
+      "longitude": 55.2708,
+      "ipAddress": "172.16.1.60"
+    },
+    "knownDevices": [
+      "DEV-ADD10PN",
+      "DEV-I24SWS1"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-13014",
+    "accountNumber": "SF-****-2034",
+    "ownerName": "Titanium Global Pay",
+    "ownerEmail": "titanium.global.pay@synthetic-flow.demo",
+    "type": "MULE_SUSPECT",
+    "status": "FLAGGED",
+    "balance": 32187.42,
+    "currency": "USD",
+    "createdAt": "2026-05-20T15:49:24.169Z",
+    "riskScore": 86,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "New York",
+      "country": "US",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "ipAddress": "198.51.100.18"
+    },
+    "knownDevices": [
+      "DEV-PGT9YND",
+      "DEV-ZWEP0RI"
+    ],
+    "tags": [
+      "High Risk Mule",
+      "Rapid Cash-Out",
+      "SAR Watchlist"
+    ],
+    "totalAlertsCount": 6,
+    "riskFactors": [
+      "Linked to Smurfing Ring",
+      "Multiple IP Hopping",
+      "Off-Hours Transfers"
+    ]
+  },
+  {
+    "id": "ACC-13151",
+    "accountNumber": "SF-****-2081",
+    "ownerName": "Alexander Wright",
+    "ownerEmail": "alexander.wright@synthetic-flow.demo",
+    "type": "MERCHANT",
+    "status": "ACTIVE",
+    "balance": 113878.85,
+    "currency": "USD",
+    "createdAt": "2025-08-05T15:49:24.169Z",
+    "riskScore": 22,
+    "historicalAvgAmount": 4500,
+    "historicalStdDevAmount": 2025,
+    "lastKnownLocation": {
+      "city": "Sao Paulo",
+      "country": "BR",
+      "latitude": -23.5505,
+      "longitude": -46.6333,
+      "ipAddress": "10.0.1.8"
+    },
+    "knownDevices": [
+      "DEV-6AOKUJU",
+      "DEV-GAEM8I9"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-13288",
+    "accountNumber": "SF-****-2128",
+    "ownerName": "Mei-Ling Zhou",
+    "ownerEmail": "mei.ling.zhou@synthetic-flow.demo",
+    "type": "MERCHANT",
+    "status": "ACTIVE",
+    "balance": 47425.13,
+    "currency": "USD",
+    "createdAt": "2025-09-03T15:49:24.169Z",
+    "riskScore": 15,
+    "historicalAvgAmount": 4500,
+    "historicalStdDevAmount": 2025,
+    "lastKnownLocation": {
+      "city": "New York",
+      "country": "US",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "ipAddress": "198.51.100.229"
+    },
+    "knownDevices": [
+      "DEV-F8Q6VJ1",
+      "DEV-VGC4U7L"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 1,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-13425",
+    "accountNumber": "SF-****-2175",
+    "ownerName": "Gabriel Silva",
+    "ownerEmail": "gabriel.silva@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 229848.41,
+    "currency": "USD",
+    "createdAt": "2026-02-03T15:49:24.169Z",
+    "riskScore": 20,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Dubai",
+      "country": "AE",
+      "latitude": 25.2048,
+      "longitude": 55.2708,
+      "ipAddress": "172.16.1.100"
+    },
+    "knownDevices": [
+      "DEV-8Y48SRQ",
+      "DEV-KOEA9G3"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-13562",
+    "accountNumber": "SF-****-2222",
+    "ownerName": "Starlight Merchants",
+    "ownerEmail": "starlight.merchants@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 235043.38,
+    "currency": "USD",
+    "createdAt": "2026-04-26T15:49:24.169Z",
+    "riskScore": 14,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "New York",
+      "country": "US",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "ipAddress": "198.51.100.91"
+    },
+    "knownDevices": [
+      "DEV-WJ7SS2B",
+      "DEV-AW0WMK9"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-13699",
+    "accountNumber": "SF-****-2269",
+    "ownerName": "Olivia Taylor",
+    "ownerEmail": "olivia.taylor@synthetic-flow.demo",
+    "type": "MULE_SUSPECT",
+    "status": "FLAGGED",
+    "balance": 16495.1,
+    "currency": "USD",
+    "createdAt": "2025-11-12T15:49:24.169Z",
+    "riskScore": 92,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "New York",
+      "country": "US",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "ipAddress": "198.51.100.140"
+    },
+    "knownDevices": [
+      "DEV-2OCUIFN",
+      "DEV-KIYZZIO"
+    ],
+    "tags": [
+      "High Risk Mule",
+      "Rapid Cash-Out",
+      "SAR Watchlist"
+    ],
+    "totalAlertsCount": 5,
+    "riskFactors": [
+      "Linked to Smurfing Ring",
+      "Multiple IP Hopping",
+      "Off-Hours Transfers"
+    ]
+  },
+  {
+    "id": "ACC-13836",
+    "accountNumber": "SF-****-2316",
+    "ownerName": "Lucas Van Der Berg",
+    "ownerEmail": "lucas.van.der.berg@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 89845.75,
+    "currency": "USD",
+    "createdAt": "2025-12-25T15:49:24.169Z",
+    "riskScore": 48,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Sao Paulo",
+      "country": "BR",
+      "latitude": -23.5505,
+      "longitude": -46.6333,
+      "ipAddress": "10.0.1.122"
+    },
+    "knownDevices": [
+      "DEV-GMZIZH8",
+      "DEV-2CB1GFG"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-13973",
+    "accountNumber": "SF-****-2363",
+    "ownerName": "Seraphim Financial Ltd",
+    "ownerEmail": "seraphim.financial.ltd@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 110792.02,
+    "currency": "USD",
+    "createdAt": "2025-08-04T15:49:24.169Z",
+    "riskScore": 9,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Tokyo",
+      "country": "JP",
+      "latitude": 35.6762,
+      "longitude": 139.6503,
+      "ipAddress": "192.88.99.226"
+    },
+    "knownDevices": [
+      "DEV-5YJPLWK",
+      "DEV-KAI72MO"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-14110",
+    "accountNumber": "SF-****-2410",
+    "ownerName": "Ethan Hawke",
+    "ownerEmail": "ethan.hawke@synthetic-flow.demo",
+    "type": "HIGH_NET_WORTH",
+    "status": "FROZEN",
+    "balance": 200231.4,
+    "currency": "USD",
+    "createdAt": "2026-05-27T15:49:24.169Z",
+    "riskScore": 24,
+    "historicalAvgAmount": 12500,
+    "historicalStdDevAmount": 5625,
+    "lastKnownLocation": {
+      "city": "San Francisco",
+      "country": "US",
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "ipAddress": "192.0.2.197"
+    },
+    "knownDevices": [
+      "DEV-EHOIN5Q",
+      "DEV-6066LQK"
+    ],
+    "tags": [
+      "VIP",
+      "Private Banking"
+    ],
+    "totalAlertsCount": 1,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-14247",
+    "accountNumber": "SF-****-2457",
+    "ownerName": "Nadia Benali",
+    "ownerEmail": "nadia.benali@synthetic-flow.demo",
+    "type": "BUSINESS",
+    "status": "ACTIVE",
+    "balance": 60545.59,
+    "currency": "USD",
+    "createdAt": "2025-11-09T15:49:24.169Z",
+    "riskScore": 19,
+    "historicalAvgAmount": 4500,
+    "historicalStdDevAmount": 2025,
+    "lastKnownLocation": {
+      "city": "Dubai",
+      "country": "AE",
+      "latitude": 25.2048,
+      "longitude": 55.2708,
+      "ipAddress": "172.16.1.103"
+    },
+    "knownDevices": [
+      "DEV-T70CX7Q",
+      "DEV-NDELI9S"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-14384",
+    "accountNumber": "SF-****-2504",
+    "ownerName": "Klaus Becker",
+    "ownerEmail": "klaus.becker@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 66130.27,
+    "currency": "USD",
+    "createdAt": "2026-01-31T15:49:24.169Z",
+    "riskScore": 22,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "New York",
+      "country": "US",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "ipAddress": "198.51.100.132"
+    },
+    "knownDevices": [
+      "DEV-LJ6XGI0",
+      "DEV-K7698RL"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-14521",
+    "accountNumber": "SF-****-2551",
+    "ownerName": "Aurelia Solis",
+    "ownerEmail": "aurelia.solis@synthetic-flow.demo",
+    "type": "MERCHANT",
+    "status": "ACTIVE",
+    "balance": 213922.2,
+    "currency": "USD",
+    "createdAt": "2025-12-16T15:49:24.169Z",
+    "riskScore": 5,
+    "historicalAvgAmount": 4500,
+    "historicalStdDevAmount": 2025,
+    "lastKnownLocation": {
+      "city": "New York",
+      "country": "US",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "ipAddress": "198.51.100.11"
+    },
+    "knownDevices": [
+      "DEV-I2M24M7",
+      "DEV-5A5XWKF"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-14658",
+    "accountNumber": "SF-****-2598",
+    "ownerName": "Mirage Holdings B.V.",
+    "ownerEmail": "mirage.holdings.b.v.@synthetic-flow.demo",
+    "type": "MULE_SUSPECT",
+    "status": "FLAGGED",
+    "balance": 79092.39,
+    "currency": "USD",
+    "createdAt": "2025-08-21T15:49:24.169Z",
+    "riskScore": 84,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Toronto",
+      "country": "CA",
+      "latitude": 43.6532,
+      "longitude": -79.3832,
+      "ipAddress": "198.51.101.54"
+    },
+    "knownDevices": [
+      "DEV-TK6E1YG",
+      "DEV-FS88WY0"
+    ],
+    "tags": [
+      "High Risk Mule",
+      "Rapid Cash-Out",
+      "SAR Watchlist"
+    ],
+    "totalAlertsCount": 3,
+    "riskFactors": [
+      "Linked to Smurfing Ring",
+      "Multiple IP Hopping",
+      "Off-Hours Transfers"
+    ]
+  },
+  {
+    "id": "ACC-14795",
+    "accountNumber": "SF-****-2645",
+    "ownerName": "Hassan Farooq",
+    "ownerEmail": "hassan.farooq@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 83435.22,
+    "currency": "USD",
+    "createdAt": "2026-06-10T15:49:24.169Z",
+    "riskScore": 54,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "San Francisco",
+      "country": "US",
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "ipAddress": "192.0.2.226"
+    },
+    "knownDevices": [
+      "DEV-4D6KVQJ",
+      "DEV-OG7BA84"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-14932",
+    "accountNumber": "SF-****-2692",
+    "ownerName": "Ingrid Larson",
+    "ownerEmail": "ingrid.larson@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 153431.57,
+    "currency": "USD",
+    "createdAt": "2025-12-19T15:49:24.169Z",
+    "riskScore": 26,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "London",
+      "country": "GB",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "ipAddress": "203.0.113.179"
+    },
+    "knownDevices": [
+      "DEV-998846B",
+      "DEV-N259BAZ"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 1,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-15069",
+    "accountNumber": "SF-****-2739",
+    "ownerName": "Dmitri Volkov",
+    "ownerEmail": "dmitri.volkov@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 116987.38,
+    "currency": "USD",
+    "createdAt": "2026-06-06T15:49:24.169Z",
+    "riskScore": 24,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "New York",
+      "country": "US",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "ipAddress": "198.51.100.48"
+    },
+    "knownDevices": [
+      "DEV-LR7IUFM",
+      "DEV-LZRSZKZ"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-15206",
+    "accountNumber": "SF-****-2786",
+    "ownerName": "Zenith Logistics LLC",
+    "ownerEmail": "zenith.logistics.llc@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 148508.09,
+    "currency": "USD",
+    "createdAt": "2026-01-07T15:49:24.169Z",
+    "riskScore": 25,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Singapore",
+      "country": "SG",
+      "latitude": 1.3521,
+      "longitude": 103.8198,
+      "ipAddress": "198.18.0.8"
+    },
+    "knownDevices": [
+      "DEV-WLXLNNQ",
+      "DEV-HEFCL3P"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-15343",
+    "accountNumber": "SF-****-2833",
+    "ownerName": "Chloe Martin",
+    "ownerEmail": "chloe.martin@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 91671.98,
+    "currency": "USD",
+    "createdAt": "2025-11-18T15:49:24.169Z",
+    "riskScore": 18,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Dubai",
+      "country": "AE",
+      "latitude": 25.2048,
+      "longitude": 55.2708,
+      "ipAddress": "172.16.1.54"
+    },
+    "knownDevices": [
+      "DEV-BE4PAA4",
+      "DEV-C0AHJ5B"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-15480",
+    "accountNumber": "SF-****-2880",
+    "ownerName": "Vikram Malhotra",
+    "ownerEmail": "vikram.malhotra@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 57038.66,
+    "currency": "USD",
+    "createdAt": "2025-08-13T15:49:24.169Z",
+    "riskScore": 27,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Frankfurt",
+      "country": "DE",
+      "latitude": 50.1109,
+      "longitude": 8.6821,
+      "ipAddress": "198.19.0.121"
+    },
+    "knownDevices": [
+      "DEV-84OTCTA",
+      "DEV-165E9QF"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-15617",
+    "accountNumber": "SF-****-2927",
+    "ownerName": "Siddharth Roy",
+    "ownerEmail": "siddharth.roy@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 147635.14,
+    "currency": "USD",
+    "createdAt": "2026-03-09T15:49:24.169Z",
+    "riskScore": 5,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "San Francisco",
+      "country": "US",
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "ipAddress": "192.0.2.117"
+    },
+    "knownDevices": [
+      "DEV-AH68KP1",
+      "DEV-I5552D7"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-15754",
+    "accountNumber": "SF-****-2974",
+    "ownerName": "Keiko Tanaka",
+    "ownerEmail": "keiko.tanaka@synthetic-flow.demo",
+    "type": "MERCHANT",
+    "status": "ACTIVE",
+    "balance": 117106.68,
+    "currency": "USD",
+    "createdAt": "2026-01-29T15:49:24.169Z",
+    "riskScore": 67,
+    "historicalAvgAmount": 4500,
+    "historicalStdDevAmount": 2025,
+    "lastKnownLocation": {
+      "city": "New York",
+      "country": "US",
+      "latitude": 40.7128,
+      "longitude": -74.006,
+      "ipAddress": "198.51.100.74"
+    },
+    "knownDevices": [
+      "DEV-YNA41SA",
+      "DEV-GSWE5OY"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 1,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-15891",
+    "accountNumber": "SF-****-3021",
+    "ownerName": "OmniPay Solutions",
+    "ownerEmail": "omnipay.solutions@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 113621.02,
+    "currency": "USD",
+    "createdAt": "2026-02-25T15:49:24.169Z",
+    "riskScore": 7,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "San Francisco",
+      "country": "US",
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "ipAddress": "192.0.2.98"
+    },
+    "knownDevices": [
+      "DEV-1KN22WZ",
+      "DEV-GH8A5X4"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-16028",
+    "accountNumber": "SF-****-3068",
+    "ownerName": "Arthur Pendelton",
+    "ownerEmail": "arthur.pendelton@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 83773.49,
+    "currency": "USD",
+    "createdAt": "2026-01-21T15:49:24.169Z",
+    "riskScore": 17,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Sao Paulo",
+      "country": "BR",
+      "latitude": -23.5505,
+      "longitude": -46.6333,
+      "ipAddress": "10.0.1.168"
+    },
+    "knownDevices": [
+      "DEV-F7ZZD5G",
+      "DEV-ZWSOYNH"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-16165",
+    "accountNumber": "SF-****-3115",
+    "ownerName": "Fatima Zahra",
+    "ownerEmail": "fatima.zahra@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "FROZEN",
+    "balance": 242235.93,
+    "currency": "USD",
+    "createdAt": "2025-12-28T15:49:24.169Z",
+    "riskScore": 20,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Tokyo",
+      "country": "JP",
+      "latitude": 35.6762,
+      "longitude": 139.6503,
+      "ipAddress": "192.88.99.46"
+    },
+    "knownDevices": [
+      "DEV-JTQTQSE",
+      "DEV-M5WBK1L"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-16302",
+    "accountNumber": "SF-****-3162",
+    "ownerName": "Elias Thorne",
+    "ownerEmail": "elias.thorne@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 186953.02,
+    "currency": "USD",
+    "createdAt": "2025-12-19T15:49:24.169Z",
+    "riskScore": 13,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "London",
+      "country": "GB",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "ipAddress": "203.0.113.52"
+    },
+    "knownDevices": [
+      "DEV-6D8CJ5P",
+      "DEV-I11JG4T"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-16439",
+    "accountNumber": "SF-****-3209",
+    "ownerName": "Nordic Wave AB",
+    "ownerEmail": "nordic.wave.ab@synthetic-flow.demo",
+    "type": "HIGH_NET_WORTH",
+    "status": "ACTIVE",
+    "balance": 92309.08,
+    "currency": "USD",
+    "createdAt": "2026-05-15T15:49:24.169Z",
+    "riskScore": 26,
+    "historicalAvgAmount": 12500,
+    "historicalStdDevAmount": 5625,
+    "lastKnownLocation": {
+      "city": "Sao Paulo",
+      "country": "BR",
+      "latitude": -23.5505,
+      "longitude": -46.6333,
+      "ipAddress": "10.0.1.224"
+    },
+    "knownDevices": [
+      "DEV-DTL2734",
+      "DEV-CD0R2AJ"
+    ],
+    "tags": [
+      "VIP",
+      "Private Banking"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  },
+  {
+    "id": "ACC-16576",
+    "accountNumber": "SF-****-3256",
+    "ownerName": "Valerie Dubois",
+    "ownerEmail": "valerie.dubois@synthetic-flow.demo",
+    "type": "MULE_SUSPECT",
+    "status": "FLAGGED",
+    "balance": 11502.65,
+    "currency": "USD",
+    "createdAt": "2026-02-21T15:49:24.169Z",
+    "riskScore": 85,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Sao Paulo",
+      "country": "BR",
+      "latitude": -23.5505,
+      "longitude": -46.6333,
+      "ipAddress": "10.0.1.231"
+    },
+    "knownDevices": [
+      "DEV-D1ZER01",
+      "DEV-QXRLQQG"
+    ],
+    "tags": [
+      "High Risk Mule",
+      "Rapid Cash-Out",
+      "SAR Watchlist"
+    ],
+    "totalAlertsCount": 4,
+    "riskFactors": [
+      "Linked to Smurfing Ring",
+      "Multiple IP Hopping",
+      "Off-Hours Transfers"
+    ]
+  },
+  {
+    "id": "ACC-16713",
+    "accountNumber": "SF-****-3303",
+    "ownerName": "Orion Ventures Global",
+    "ownerEmail": "orion.ventures.global@synthetic-flow.demo",
+    "type": "CONSUMER",
+    "status": "ACTIVE",
+    "balance": 103936.95,
+    "currency": "USD",
+    "createdAt": "2025-09-21T15:49:24.169Z",
+    "riskScore": 62,
+    "historicalAvgAmount": 280,
+    "historicalStdDevAmount": 126,
+    "lastKnownLocation": {
+      "city": "Tokyo",
+      "country": "JP",
+      "latitude": 35.6762,
+      "longitude": 139.6503,
+      "ipAddress": "192.88.99.180"
+    },
+    "knownDevices": [
+      "DEV-P7PWDMH",
+      "DEV-QJU1WXG"
+    ],
+    "tags": [
+      "Standard KYC"
+    ],
+    "totalAlertsCount": 0,
+    "riskFactors": []
+  }
+]
