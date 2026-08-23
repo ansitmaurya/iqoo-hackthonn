@@ -1,10 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { 
-  Shield, 
-  Sparkles, 
-  ArrowRight,
-  Zap
-} from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Shield, ArrowRight, Zap, ShieldCheck } from 'lucide-react';
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -12,35 +7,32 @@ interface SplashScreenProps {
 
 export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
-  const [typedTitle, setTypedTitle] = useState<string>('');
-  const fullTitle = 'TRACEGUARD';
+  const [isExiting, setIsExiting] = useState<boolean>(false);
+  const completedRef = useRef<boolean>(false);
 
-  // Letter-by-letter reveal effect for title
-  useEffect(() => {
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index <= fullTitle.length) {
-        setTypedTitle(fullTitle.slice(0, index));
-        index++;
-      } else {
-        clearInterval(interval);
-      }
-    }, 90);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Manual launch transition when user clicks INITIATE CORE
-  const handleInitiateCore = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
+  // Trigger smooth exit transition when user clicks Initiate Core or presses Enter
+  const handleExit = useCallback(() => {
+    if (completedRef.current) return;
+    completedRef.current = true;
+    setIsExiting(true);
     setTimeout(() => {
       onComplete();
-    }, 650);
-  };
+    }, 450);
+  }, [onComplete]);
 
-  // Background Interactive Matrix Canvas Animation
+  // Keyboard shortcut: Press Enter or Space to initiate core instantly
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+        e.preventDefault();
+        handleExit();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleExit]);
+
+  // Subtle background constellation canvas (slow, calm, low opacity)
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -58,34 +50,39 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
     };
     window.addEventListener('resize', handleResize);
 
-    // Particle nodes
-    const particleCount = 75;
+    // Reduced number of particles with very slow, gentle drift
+    const particleCount = 28;
     const particles = Array.from({ length: particleCount }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.7,
-      vy: (Math.random() - 0.5) * 0.7,
-      size: Math.random() * 2 + 1,
-      alpha: Math.random() * 0.6 + 0.2
+      vx: (Math.random() - 0.5) * 0.25,
+      vy: (Math.random() - 0.5) * 0.25,
+      radius: Math.random() * 1.5 + 0.8,
+      alpha: Math.random() * 0.25 + 0.1
     }));
-
-    let scanLineY = 0;
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // 1. Deep Space Cyber Gradient
-      const grad = ctx.createRadialGradient(width / 2, height / 2, 50, width / 2, height / 2, width * 0.75);
-      grad.addColorStop(0, '#0a192f');
-      grad.addColorStop(0.5, '#040d1a');
-      grad.addColorStop(1, '#010409');
+      // 1. Subtle, deep gradient
+      const grad = ctx.createRadialGradient(
+        width / 2,
+        height / 2,
+        40,
+        width / 2,
+        height / 2,
+        Math.max(width, height) * 0.7
+      );
+      grad.addColorStop(0, '#0a1426');
+      grad.addColorStop(0.5, '#050a14');
+      grad.addColorStop(1, '#02060d');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, width, height);
 
-      // 2. Cyber Horizon Grid
-      ctx.strokeStyle = 'rgba(0, 242, 254, 0.09)';
+      // 2. Very subtle architectural grid lines
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.035)';
       ctx.lineWidth = 1;
-      const gridSize = 60;
+      const gridSize = 72;
       for (let x = 0; x < width; x += gridSize) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
@@ -99,54 +96,35 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
         ctx.stroke();
       }
 
-      // 3. Floating Constellation Nodes & Connecting Links
+      // 3. Gentle node constellation
       particles.forEach((p, i) => {
         p.x += p.vx;
         p.y += p.vy;
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
 
-        // Draw node
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 242, 254, ${p.alpha})`;
-        ctx.shadowColor = '#00f2fe';
-        ctx.shadowBlur = 6;
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(56, 189, 248, ${p.alpha})`;
         ctx.fill();
-        ctx.shadowBlur = 0;
 
-        // Connect nearby nodes
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const dx = p.x - p2.x;
           const dy = p.y - p2.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 110) {
+          if (dist < 120) {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(2, 132, 199, ${(1 - dist / 110) * 0.25})`;
-            ctx.lineWidth = 0.8;
+            ctx.strokeStyle = `rgba(56, 189, 248, ${(1 - dist / 120) * 0.08})`;
+            ctx.lineWidth = 0.75;
             ctx.stroke();
           }
         }
       });
-
-      // 4. Sweeping Laser Scanning Line
-      scanLineY = (scanLineY + 2.5) % height;
-      const scanGrad = ctx.createLinearGradient(0, scanLineY - 30, 0, scanLineY + 30);
-      scanGrad.addColorStop(0, 'rgba(0, 242, 254, 0)');
-      scanGrad.addColorStop(0.5, 'rgba(0, 242, 254, 0.22)');
-      scanGrad.addColorStop(1, 'rgba(0, 242, 254, 0)');
-      ctx.fillStyle = scanGrad;
-      ctx.fillRect(0, scanLineY - 30, width, 60);
-
-      ctx.beginPath();
-      ctx.moveTo(0, scanLineY);
-      ctx.lineTo(width, scanLineY);
-      ctx.strokeStyle = 'rgba(0, 242, 254, 0.75)';
-      ctx.lineWidth = 1.2;
-      ctx.stroke();
 
       animId = requestAnimationFrame(render);
     };
@@ -160,23 +138,27 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
   }, []);
 
   return (
-    <div style={{
-      position: 'fixed',
-      inset: 0,
-      zIndex: 99999,
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: '#010409',
-      color: '#f8fafc',
-      overflow: 'hidden',
-      transition: 'opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)',
-      opacity: isTransitioning ? 0 : 1,
-      transform: isTransitioning ? 'scale(1.1) translateY(-12px)' : 'scale(1) translateY(0)',
-      pointerEvents: isTransitioning ? 'none' : 'auto'
-    }}>
-      {/* Background Interactive Particle Canvas */}
+    <div
+      className="traceguard-splash-overlay"
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 99999,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#02060d',
+        color: '#f8fafc',
+        overflow: 'hidden',
+        transition: 'opacity 0.45s ease-out, transform 0.45s ease-out, filter 0.45s ease-out',
+        opacity: isExiting ? 0 : 1,
+        transform: isExiting ? 'scale(1.02)' : 'scale(1)',
+        filter: isExiting ? 'blur(4px)' : 'none',
+        pointerEvents: isExiting ? 'none' : 'auto'
+      }}
+    >
+      {/* Dynamic Background Canvas */}
       <canvas
         ref={canvasRef}
         style={{
@@ -188,219 +170,265 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete }) => {
         }}
       />
 
-      {/* Cyber Corner HUD Accents */}
-      <div style={{ position: 'absolute', top: 24, left: 24, display: 'flex', alignItems: 'center', gap: '8px', zIndex: 10 }}>
-        <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#00f2fe', boxShadow: '0 0 10px #00f2fe' }} />
-        <span className="font-mono" style={{ fontSize: '11px', color: '#38bdf8', letterSpacing: '1px', fontWeight: 700 }}>
-          TRACEGUARD // SEC-LEVEL 5
-        </span>
-      </div>
-
-      <div style={{ position: 'absolute', top: 24, right: 24, display: 'flex', alignItems: 'center', gap: '12px', zIndex: 10 }}>
-        <div className="font-mono" style={{ fontSize: '11px', color: '#94a3b8', background: 'rgba(15, 23, 42, 0.7)', padding: '4px 10px', borderRadius: '4px', border: '1px solid rgba(56, 189, 248, 0.2)' }}>
-          PROTOCOL: QUANTUM-DETERMINISTIC
-        </div>
-      </div>
-
-      <div style={{ position: 'absolute', bottom: 24, left: 24, fontSize: '11px', color: '#64748b', fontFamily: 'JetBrains Mono', zIndex: 10 }}>
-        NODE CLUSTER: GLOBAL_FINANCIAL_MESH
-      </div>
-
-      <div style={{ position: 'absolute', bottom: 24, right: 24, fontSize: '11px', color: '#64748b', fontFamily: 'JetBrains Mono', zIndex: 10 }}>
-        SIMULATION: 100% SYNTHETIC
-      </div>
-
-      {/* Center Cinematic Main Content Container */}
-      <div style={{
-        position: 'relative',
-        zIndex: 20,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        textAlign: 'center',
-        padding: '30px',
-        maxWidth: '680px',
-        width: '90%'
-      }}>
-
-        {/* Holographic Glowing Central Logo Core */}
-        <div style={{ position: 'relative', width: '140px', height: '140px', marginBottom: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          
-          {/* Outer Rotating Radar Ring */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            borderRadius: '50%',
-            border: '2px dashed rgba(0, 242, 254, 0.6)',
-            animation: 'spin 12s linear infinite',
-            boxShadow: '0 0 30px rgba(0, 242, 254, 0.3)'
-          }} />
-
-          {/* Inner Counter-Rotating Hex Ring */}
-          <div style={{
-            position: 'absolute',
-            inset: '12px',
-            borderRadius: '50%',
-            border: '1.5px solid rgba(37, 99, 235, 0.6)',
-            borderTopColor: '#00f2fe',
-            borderBottomColor: '#00f2fe',
-            animation: 'spinReverse 8s linear infinite'
-          }} />
-
-          {/* Pulsing Energy Core Aura */}
-          <div style={{
-            position: 'absolute',
-            inset: '24px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(0, 242, 254, 0.4) 0%, rgba(37, 99, 235, 0.2) 70%, transparent 100%)',
-            animation: 'pulseGlow 2.5s ease-in-out infinite'
-          }} />
-
-          {/* Main Shield Icon */}
-          <div style={{
-            width: '68px',
-            height: '68px',
-            borderRadius: '18px',
-            background: 'linear-gradient(135deg, #0284c7 0%, #1e40af 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 0 35px rgba(0, 242, 254, 0.7), inset 0 0 15px rgba(255, 255, 255, 0.4)',
-            zIndex: 5
-          }}>
-            <Shield size={36} color="#ffffff" strokeWidth={2.4} />
-          </div>
-        </div>
-
-        {/* Project Title with letter-by-letter futuristic reveal */}
-        <h1 style={{
-          fontSize: '44px',
-          fontWeight: 900,
-          letterSpacing: '6px',
-          color: '#ffffff',
-          textShadow: '0 0 25px rgba(0, 242, 254, 0.85), 0 0 50px rgba(2, 132, 199, 0.5)',
-          marginBottom: '8px',
-          fontFamily: 'Inter, sans-serif',
+      {/* Top Header Telemetry Badges */}
+      <div
+        style={{
+          position: 'absolute',
+          top: '28px',
+          left: '32px',
+          right: '32px',
           display: 'flex',
+          justifyContent: 'space-between',
           alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '52px'
-        }}>
-          {typedTitle}
-          {typedTitle.length < fullTitle.length && (
-            <span style={{
-              display: 'inline-block',
-              width: '12px',
-              height: '34px',
-              background: '#00f2fe',
-              marginLeft: '4px',
-              animation: 'blink 0.8s infinite'
-            }} />
-          )}
-        </h1>
-
-        {/* Subtitle Badge */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          background: 'rgba(2, 132, 199, 0.14)',
-          border: '1px solid rgba(0, 242, 254, 0.45)',
-          borderRadius: '20px',
-          padding: '6px 20px',
-          marginBottom: '32px',
-          boxShadow: '0 0 20px rgba(0, 242, 254, 0.2)'
-        }}>
-          <Sparkles size={14} color="#00f2fe" />
-          <span style={{
-            fontSize: '12px',
-            fontWeight: 800,
-            letterSpacing: '2.5px',
-            color: '#38bdf8',
-            textTransform: 'uppercase'
-          }}>
-            ADVANCED FRAUD INTELLIGENCE
+          zIndex: 10
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div
+            style={{
+              width: 7,
+              height: 7,
+              borderRadius: '50%',
+              background: '#0284c7',
+              boxShadow: '0 0 8px rgba(2, 132, 199, 0.6)'
+            }}
+          />
+          <span
+            className="font-mono"
+            style={{
+              fontSize: '11px',
+              color: '#94a3b8',
+              letterSpacing: '1.2px',
+              fontWeight: 600
+            }}
+          >
+            TRACEGUARD <span style={{ color: '#38bdf8' }}>// SOC CORE OS</span>
           </span>
         </div>
 
-        {/* Core Ready Status Callout */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          background: 'rgba(15, 23, 42, 0.65)',
-          border: '1px solid rgba(56, 189, 248, 0.25)',
-          borderRadius: '8px',
-          padding: '8px 18px',
-          marginBottom: '28px',
-          fontFamily: 'JetBrains Mono'
-        }}>
-          <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
-          <span style={{ fontSize: '11px', color: '#94a3b8' }}>SYSTEM STATUS:</span>
-          <span style={{ fontSize: '11px', color: '#38bdf8', fontWeight: 800 }}>DETECTION ENGINE ARMED & READY</span>
-        </div>
-
-        {/* Central Animated Button: INITIATE CORE */}
-        <button
-          onClick={handleInitiateCore}
+        <div
+          className="font-mono"
           style={{
-            position: 'relative',
-            background: 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
-            border: '2px solid #00f2fe',
-            borderRadius: '10px',
-            padding: '16px 42px',
-            color: '#ffffff',
-            fontSize: '15px',
-            fontWeight: 900,
-            letterSpacing: '2.5px',
-            textTransform: 'uppercase',
-            cursor: 'pointer',
-            boxShadow: '0 0 30px rgba(0, 242, 254, 0.5), inset 0 0 20px rgba(0, 242, 254, 0.3)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-3px) scale(1.05)';
-            e.currentTarget.style.boxShadow = '0 0 45px rgba(0, 242, 254, 0.8), inset 0 0 25px rgba(0, 242, 254, 0.5)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0) scale(1)';
-            e.currentTarget.style.boxShadow = '0 0 30px rgba(0, 242, 254, 0.5), inset 0 0 20px rgba(0, 242, 254, 0.3)';
+            fontSize: '11px',
+            color: '#64748b',
+            background: 'rgba(15, 23, 42, 0.6)',
+            padding: '4px 10px',
+            borderRadius: '4px',
+            border: '1px solid rgba(56, 189, 248, 0.15)'
           }}
         >
-          <Zap size={18} color="#00f2fe" />
-          <span>INITIATE CORE</span>
-          <ArrowRight size={18} color="#ffffff" />
-        </button>
-
-        {/* Direct guidance */}
-        <div style={{ fontSize: '11px', color: '#64748b', marginTop: '16px', letterSpacing: '0.6px' }}>
-          Click <strong style={{ color: '#38bdf8' }}>INITIATE CORE</strong> to open live SOC dashboard
+          AUTH: ZERO-TRUST
         </div>
-
       </div>
 
-      {/* Global CSS Keyframes for Splash Screen */}
+      {/* Center Cinematic Card */}
+      <div
+        className="splash-center-content"
+        style={{
+          position: 'relative',
+          zIndex: 20,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          textAlign: 'center',
+          padding: '40px 36px',
+          maxWidth: '560px',
+          width: '90%',
+          background: 'rgba(8, 15, 30, 0.55)',
+          borderRadius: '16px',
+          border: '1px solid rgba(56, 189, 248, 0.14)',
+          boxShadow: '0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+          backdropFilter: 'blur(16px)'
+        }}
+      >
+        {/* Refined Shield Logo Container with Soft Glow */}
+        <div
+          style={{
+            position: 'relative',
+            width: '88px',
+            height: '88px',
+            marginBottom: '22px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          {/* Subtle Ambient Radial Glow */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: '-12px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(2, 132, 199, 0.25) 0%, rgba(2, 132, 199, 0) 70%)',
+              filter: 'blur(10px)',
+              pointerEvents: 'none'
+            }}
+          />
+
+          {/* Elegant Circular Frame */}
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              borderRadius: '50%',
+              border: '1px solid rgba(56, 189, 248, 0.25)',
+              background: 'rgba(15, 23, 42, 0.8)'
+            }}
+          />
+
+          {/* Logo Badge Icon */}
+          <div
+            style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '15px',
+              background: 'linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 20px rgba(2, 132, 199, 0.35)',
+              zIndex: 2
+            }}
+          >
+            <Shield size={28} color="#ffffff" strokeWidth={2.2} />
+          </div>
+        </div>
+
+        {/* Title */}
+        <h1
+          style={{
+            fontSize: '34px',
+            fontWeight: 800,
+            letterSpacing: '4px',
+            color: '#ffffff',
+            marginBottom: '8px',
+            fontFamily: 'Inter, sans-serif'
+          }}
+        >
+          TRACE<span style={{ color: '#38bdf8' }}>GUARD</span>
+        </h1>
+
+        {/* Subtitle */}
+        <div
+          style={{
+            fontSize: '12px',
+            fontWeight: 600,
+            letterSpacing: '2px',
+            color: '#94a3b8',
+            textTransform: 'uppercase',
+            marginBottom: '24px'
+          }}
+        >
+          Enterprise Fraud Detection & SOC Intelligence
+        </div>
+
+        {/* System Status Callout */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+            background: 'rgba(15, 23, 42, 0.75)',
+            border: '1px solid rgba(56, 189, 248, 0.16)',
+            borderRadius: '8px',
+            padding: '8px 18px',
+            marginBottom: '26px',
+            fontFamily: 'JetBrains Mono, monospace'
+          }}
+        >
+          <ShieldCheck size={14} color="#10b981" />
+          <span style={{ fontSize: '11px', color: '#94a3b8' }}>STATUS:</span>
+          <span style={{ fontSize: '11px', color: '#38bdf8', fontWeight: 700, letterSpacing: '0.5px' }}>
+            DETECTION ENGINE ARMED & READY
+          </span>
+        </div>
+
+        {/* Central INITIATE CORE Action Button */}
+        <button
+          onClick={handleExit}
+          style={{
+            position: 'relative',
+            width: '100%',
+            background: 'linear-gradient(135deg, #0284c7 0%, #2563eb 100%)',
+            border: '1px solid rgba(56, 189, 248, 0.6)',
+            borderRadius: '10px',
+            padding: '15px 28px',
+            color: '#ffffff',
+            fontSize: '14px',
+            fontWeight: 800,
+            letterSpacing: '2px',
+            textTransform: 'uppercase',
+            cursor: 'pointer',
+            boxShadow: '0 0 25px rgba(2, 132, 199, 0.4), inset 0 0 15px rgba(56, 189, 248, 0.15)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '10px',
+            transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+            fontFamily: 'Inter, sans-serif'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-2px)';
+            e.currentTarget.style.boxShadow = '0 0 35px rgba(2, 132, 199, 0.65), inset 0 0 20px rgba(56, 189, 248, 0.3)';
+            e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.9)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.boxShadow = '0 0 25px rgba(2, 132, 199, 0.4), inset 0 0 15px rgba(56, 189, 248, 0.15)';
+            e.currentTarget.style.borderColor = 'rgba(56, 189, 248, 0.6)';
+          }}
+        >
+          <Zap size={16} color="#38bdf8" />
+          <span>INITIATE CORE</span>
+          <ArrowRight size={16} color="#ffffff" />
+        </button>
+
+        {/* Micro Telemetry Footer */}
+        <div
+          className="font-mono"
+          style={{
+            fontSize: '11px',
+            color: '#64748b',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '16px',
+            marginTop: '22px'
+          }}
+        >
+          <span>ENVIRONMENT: PRODUCTION SIM</span>
+          <span>•</span>
+          <span>LATENCY: 1.2ms</span>
+          <span>•</span>
+          <span>PIPELINE: ACTIVE</span>
+        </div>
+      </div>
+
+      {/* Bottom Subtext */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '24px',
+          fontSize: '11px',
+          color: '#475569',
+          fontFamily: 'JetBrains Mono, monospace',
+          letterSpacing: '0.5px'
+        }}
+      >
+        Press <kbd style={{ padding: '2px 6px', background: 'rgba(255,255,255,0.06)', borderRadius: '4px', border: '1px solid rgba(255,255,255,0.1)', color: '#94a3b8' }}>Enter</kbd> or click INITIATE CORE to enter dashboard
+      </div>
+
+      {/* Reduced motion and smooth styling overrides */}
       <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        @keyframes spinReverse {
-          from { transform: rotate(360deg); }
-          to { transform: rotate(0deg); }
-        }
-        @keyframes pulseGlow {
-          0%, 100% { transform: scale(1); opacity: 0.6; }
-          50% { transform: scale(1.15); opacity: 0.95; }
-        }
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
+        @media (prefers-reduced-motion: reduce) {
+          .traceguard-splash-overlay,
+          .splash-center-content {
+            transition: none !important;
+            animation: none !important;
+          }
         }
       `}</style>
     </div>
   );
 };
+
+
