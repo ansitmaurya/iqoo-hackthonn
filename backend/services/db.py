@@ -7,10 +7,18 @@ logger = logging.getLogger(__name__)
 
 Base = declarative_base()
 
+engine_kwargs = {
+    "echo": False,
+    "pool_pre_ping": True,
+    "pool_recycle": 300
+}
+
+if "postgresql" in Config.SQLALCHEMY_DATABASE_URI:
+    engine_kwargs["connect_args"] = {"connect_timeout": 10}
+
 engine = create_engine(
     Config.SQLALCHEMY_DATABASE_URI,
-    echo=False,
-    pool_pre_ping=True
+    **engine_kwargs
 )
 
 db_session = scoped_session(
@@ -19,11 +27,10 @@ db_session = scoped_session(
 
 def init_db():
     """Initializes the database schema and creates tables if they do not exist."""
-    import models.user
-    import models.network_node
-    import models.network_edge
     import models.transaction
-    import models.alert
     
-    Base.metadata.create_all(bind=engine)
-    logger.info("Database initialized with URI: %s", Config.SQLALCHEMY_DATABASE_URI.split("@")[-1])
+    try:
+        Base.metadata.create_all(bind=engine)
+        logger.info("Database schema initialized.")
+    except Exception as e:
+        logger.warning(f"Notice during init_db: {e}")
