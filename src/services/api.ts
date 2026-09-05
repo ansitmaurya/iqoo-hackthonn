@@ -2,7 +2,24 @@
 
 import type { Transaction, Alert, SystemMetrics, AlertStatus } from '../types';
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+function resolveApiBaseUrl(): string {
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+  let base = (envUrl && typeof envUrl === 'string' && envUrl.trim()) 
+    ? envUrl.trim() 
+    : 'https://traceguard-backend-r1n6.onrender.com/api';
+
+  // Normalize: remove trailing slashes
+  base = base.replace(/\/+$/, '');
+
+  // Normalize: append /api if missing
+  if (!base.endsWith('/api')) {
+    base = `${base}/api`;
+  }
+
+  return base;
+}
+
+export const API_BASE_URL = resolveApiBaseUrl();
 
 export interface CreateTransactionPayload {
   id?: string;

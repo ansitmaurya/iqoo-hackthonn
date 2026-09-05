@@ -34,23 +34,24 @@ def get_alerts():
             if severity and severity.upper() != 'ALL' and level != severity.upper():
                 continue
 
-            alert_id = f"ALT-{tx.id.replace('TX-', '')}"
+            tx_str_id = str(tx.id)
+            alert_id = f"ALT-{tx_str_id.replace('TX-', '')}"
             alerts_list.append({
                 "id": alert_id,
-                "transactionId": tx.id,
+                "transactionId": tx_str_id,
                 "transaction": tx_dict,
-                "accountId": tx.sender,
+                "accountId": str(tx.sender),
                 "accountName": f"Account {tx.sender}",
                 "riskScore": int(tx.risk_score or 0),
                 "riskLevel": level,
-                "status": "OPEN" if tx.status in ('FLAGGED', 'SETTLED', 'BLOCKED', None) else tx.status,
+                "status": "OPEN" if tx.status in ('FLAGGED', 'SETTLED', 'BLOCKED', None) else str(tx.status),
                 "assignedAnalyst": "Analyst Sarah (SecOps)" if (tx.risk_score or 0) >= 80 else "Analyst Chen (FinCrime)",
                 "createdAt": tx_dict["timestamp"],
                 "updatedAt": tx_dict["timestamp"],
                 "triggeredRules": tx_dict.get("triggeredRules", []),
                 "notes": [
                     {
-                        "id": f"NOTE-{tx.id}",
+                        "id": f"NOTE-{tx_str_id}",
                         "author": "Sentinel Threat Engine",
                         "timestamp": tx_dict["timestamp"],
                         "content": f"Automated risk alert triggered with score {tx.risk_score}/100."

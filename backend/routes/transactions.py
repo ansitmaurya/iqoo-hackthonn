@@ -131,9 +131,10 @@ def create_transaction():
         # Build alert data if flagged
         alert_dict = None
         if flagged or risk_score >= 60:
+            tx_str = str(new_tx.id)
             alert_dict = {
-                "id": f"ALT-{new_tx.id.replace('TX-', '')}",
-                "transactionId": new_tx.id,
+                "id": f"ALT-{tx_str.replace('TX-', '')}",
+                "transactionId": tx_str,
                 "accountId": sender,
                 "accountName": f"Account {sender}",
                 "riskScore": risk_score,

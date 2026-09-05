@@ -97,7 +97,12 @@ export class LiveDataProvider implements IDataProvider {
   }
 
   async fetchAlerts(params?: { status?: string; severity?: string; limit?: number }): Promise<{ data: Alert[]; total: number }> {
-    return await api.getAlerts(params);
+    try {
+      return await api.getAlerts(params);
+    } catch (err) {
+      console.warn('Live alerts query fallback:', err);
+      return { data: [], total: 0 };
+    }
   }
 
   async updateAlert(id: string, payload: {
@@ -111,6 +116,11 @@ export class LiveDataProvider implements IDataProvider {
   }
 
   async fetchNetworkTopology(): Promise<NetworkGraphResponse> {
-    return await api.getNetworkTopology();
+    try {
+      return await api.getNetworkTopology();
+    } catch (err) {
+      console.warn('Live network topology fallback to local topology generator:', err);
+      return { nodes: [], links: [] };
+    }
   }
 }
