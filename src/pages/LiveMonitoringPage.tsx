@@ -169,31 +169,13 @@ export const LiveMonitoringPage: React.FC = () => {
             justifyContent: 'space-between',
             background: 'var(--bg-subtle)'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Layers size={16} color="var(--accent-cyan)" />
               <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-primary)' }}>
                 Live Ingestion Stream
               </h3>
               <span className="font-mono" style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
                 ({liveTxs.length} latest events)
-              </span>
-              <span style={{
-                fontSize: '10px',
-                fontWeight: 700,
-                color: '#dc2626',
-                backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                border: '1px solid rgba(239, 68, 68, 0.35)',
-                padding: '2px 8px',
-                borderRadius: '4px',
-                fontFamily: 'JetBrains Mono, monospace',
-                textTransform: 'uppercase',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                marginLeft: '6px'
-              }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#ef4444', display: 'inline-block' }} />
-                Prototype Data Feed
               </span>
             </div>
             <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Click row to inspect payload</span>

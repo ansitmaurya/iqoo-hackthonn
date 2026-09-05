@@ -7,7 +7,8 @@ import {
   ArrowUpDown, 
   MapPin, 
   Eye, 
-  SlidersHorizontal 
+  SlidersHorizontal,
+  Send 
 } from 'lucide-react';
 import { useSentinelStore } from '../store/useSentinelStore';
 import { RiskBadge } from '../components/RiskBadge';
@@ -20,7 +21,7 @@ const CATEGORIES: MerchantCategory[] = [
 ];
 
 export const TransactionExplorerPage: React.FC = () => {
-  const { transactions, setSelectedTxId } = useSentinelStore();
+  const { transactions, setSelectedTxId, setIsIngestModalOpen } = useSentinelStore();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
@@ -127,10 +128,21 @@ export const TransactionExplorerPage: React.FC = () => {
           </p>
         </div>
 
-        <button className="btn btn-secondary" onClick={handleExportCSV}>
-          <Download size={14} />
-          <span>Export Filtered CSV ({filteredTransactions.length})</span>
-        </button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button 
+            className="btn btn-primary"
+            onClick={() => setIsIngestModalOpen(true)}
+            style={{ fontWeight: 800 }}
+          >
+            <Send size={14} />
+            <span>Ingest Live Transaction</span>
+          </button>
+
+          <button className="btn btn-secondary" onClick={handleExportCSV}>
+            <Download size={14} />
+            <span>Export Filtered CSV ({filteredTransactions.length})</span>
+          </button>
+        </div>
       </div>
 
       {/* Comprehensive Filter Panel */}

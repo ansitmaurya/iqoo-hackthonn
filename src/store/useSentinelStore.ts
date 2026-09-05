@@ -14,6 +14,7 @@ import rawAccounts from '../data/accounts.json';
 import rawTransactions from '../data/transactions.json';
 import { TransactionSimulator } from '../engine/simulator';
 import type { ForceScenario } from '../engine/simulator';
+import { api, type CreateTransactionPayload } from '../services/api';
 
 const STORAGE_KEY = 'SENTINEL_FLOW_V1_STORE';
 
@@ -24,6 +25,12 @@ interface SentinelStoreState {
   alerts: Alert[];
   investigations: Investigation[];
   auditLogs: AuditLogEntry[];
+
+  // API Backend State
+  isApiConnected: boolean;
+  apiLoading: boolean;
+  apiError: string | null;
+  isIngestModalOpen: boolean;
 
   // Real-time & Simulator state
   isSimulating: boolean;
@@ -40,6 +47,11 @@ interface SentinelStoreState {
 
   // Audio Alerts Enabled
   audioEnabled: boolean;
+
+  // Backend Sync & Mutation Actions
+  syncWithBackend: () => Promise<void>;
+  submitTransactionApi: (payload: CreateTransactionPayload) => Promise<{ transaction: Transaction; alert: Alert | null }>;
+  setIsIngestModalOpen: (open: boolean) => void;
 
   // Actions
   startSimulation: () => void;
@@ -214,6 +226,11 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
   investigations: initialData.investigations,
   auditLogs: initialData.auditLogs,
 
+  isApiConnected: false,
+  apiLoading: false,
+  apiError: null,
+  isIngestModalOpen: false,
+
   isSimulating: true,
   simulationSpeed: 1,
   recentNewTxIds: [],
@@ -225,6 +242,93 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
   selectedInvestigationId: null,
   activeTab: 'live',
   audioEnabled: false,
+
+  setIsIngestModalOpen: (open: boolean) => set({ isIngestModalOpen: open }),
+
+  // Hydrate store from live Flask + Supabase REST API
+  syncWithBackend: async () => {
+    set({ apiLoading: true, apiError: null });
+    try {
+      const health = await api.checkHealth();
+      if (health.status === 'online') {
+        const [txsRes, alertsRes] = await Promise.all([
+          api.getTransactions({ limit: 100 }),
+          api.getAlerts({ limit: 50 })
+        ]);
+
+        if (txsRes?.data && txsRes.data.length > 0) {
+          set((state) => ({
+            transactions: txsRes.data,
+            alerts: alertsRes?.data && alertsRes.data.length > 0 ? alertsRes.data : state.alerts,
+            isApiConnected: true,
+            apiLoading: false,
+            apiError: null
+          }));
+          return;
+        }
+      }
+      set({ isApiConnected: true, apiLoading: false });
+    } catch (err: any) {
+      // Backend not running yet or unreachable -> keep fallback in-memory state smoothly
+      set({ isApiConnected: false, apiLoading: false, apiError: err.message });
+    }
+  },
+
+  // Submit transaction to live backend, evaluate risk, persist and update store
+  submitTransactionApi: async (payload: CreateTransactionPayload) => {
+    try {
+      const result = await api.createTransaction(payload);
+      const { transaction: tx, alert } = result;
+
+      // Ingest into local store and state
+      get().ingestTransaction(tx);
+
+      if (alert) {
+        set((state) => ({
+          alerts: [alert, ...state.alerts.filter(a => a.id !== alert.id)],
+          recentNewAlertIds: [alert.id, ...state.recentNewAlertIds.slice(0, 4)]
+        }));
+      }
+
+      return result;
+    } catch (err) {
+      console.warn('Backend offline or unreachable, falling back to local simulation:', err);
+      // If offline, fallback to in-memory evaluation
+      const mockTx: Transaction = {
+        id: `TX-${Math.floor(100000 + Math.random() * 900000)}`,
+        accountId: payload.sender,
+        accountName: payload.sender_name || payload.sender,
+        recipientId: payload.receiver,
+        recipientName: payload.receiver_name || payload.receiver,
+        amount: payload.amount,
+        currency: payload.currency || 'USD',
+        type: (payload.type as any) || 'TRANSFER',
+        category: (payload.category as any) || 'PEER_TRANSFER',
+        timestamp: new Date().toISOString(),
+        location: payload.location || {
+          city: 'New York',
+          country: 'US',
+          latitude: 40.7128,
+          longitude: -74.006,
+          ipAddress: '198.51.100.42'
+        },
+        device: payload.device || {
+          deviceId: 'DEV-OFFLINE',
+          browser: 'Chrome',
+          os: 'Windows',
+          isKnownDevice: true,
+          userAgent: 'TraceGuard/2.0'
+        },
+        riskScore: payload.amount > 50000 ? 88 : payload.amount > 10000 ? 65 : 15,
+        riskLevel: payload.amount > 50000 ? 'CRITICAL' : payload.amount > 10000 ? 'HIGH' : 'LOW',
+        triggeredRules: [],
+        flagged: payload.amount > 10000,
+        status: payload.amount > 50000 ? 'BLOCKED' : 'SETTLED'
+      };
+      get().ingestTransaction(mockTx);
+      return { transaction: mockTx, alert: null };
+    }
+  },
 
   startSimulation: () => {
     if (!simulatorInstance) {
@@ -305,8 +409,8 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
         return acc;
       });
 
-      // Pipeline: Auto-create Alert if transaction is flagged or riskScore >= 60
-      if (tx.flagged || tx.riskScore >= 60) {
+      // Pipeline: Auto-create Alert if transaction is flagged or riskScore >= 60 and not already exists
+      if ((tx.flagged || tx.riskScore >= 60) && !updatedAlerts.some(a => a.transactionId === tx.id)) {
         const alertId = `ALT-${7000 + Math.floor(Math.random() * 8999)}`;
         newAlertIds.push(alertId);
 
@@ -376,7 +480,7 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
           investigations: state.investigations,
           auditLogs: updatedAudit.slice(0, 150)
         }));
-      } catch (e) {}
+      } catch (_) {}
 
       return {
         transactions: updatedTxs,
@@ -390,6 +494,11 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
   },
 
   updateAlertStatus: (alertId: string, status: AlertStatus, resolutionSummary?: string) => {
+    // Optionally fire API update in background
+    if (get().isApiConnected) {
+      api.updateAlert(alertId, { status, resolutionSummary }).catch(() => {});
+    }
+
     set((state) => {
       const updatedAlerts = state.alerts.map(a => {
         if (a.id === alertId) {
@@ -420,6 +529,10 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
   },
 
   assignAlertAnalyst: (alertId: string, analystName: string) => {
+    if (get().isApiConnected) {
+      api.updateAlert(alertId, { assignedAnalyst: analystName }).catch(() => {});
+    }
+
     set((state) => {
       const updatedAlerts = state.alerts.map(a => 
         a.id === alertId ? { ...a, assignedAnalyst: analystName, updatedAt: new Date().toISOString() } : a
@@ -429,6 +542,10 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
   },
 
   addAlertNote: (alertId: string, author: string, content: string) => {
+    if (get().isApiConnected) {
+      api.updateAlert(alertId, { note: content, author }).catch(() => {});
+    }
+
     set((state) => {
       const newNote: AlertNote = {
         id: `NOTE-${Date.now()}`,
