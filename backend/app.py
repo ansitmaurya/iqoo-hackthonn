@@ -10,14 +10,22 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    # Enable CORS for frontend origins
-    CORS(
-        app,
-        resources={r"/api/*": {"origins": Config.CORS_ORIGINS}},
-        supports_credentials=True,
-        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        allow_headers=["Content-Type", "Authorization", "X-Requested-With"]
-    )
+    # Enable CORS for frontend origins (Localhost, Vercel, Production)
+    if Config.CORS_ORIGINS == "*":
+        CORS(
+            app,
+            resources={r"/api/*": {"origins": "*"}},
+            methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            allow_headers=["Content-Type", "Authorization", "X-Requested-With"]
+        )
+    else:
+        CORS(
+            app,
+            resources={r"/api/*": {"origins": Config.CORS_ORIGINS}},
+            supports_credentials=True,
+            methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+            allow_headers=["Content-Type", "Authorization", "X-Requested-With"]
+        )
 
     # Teardown database session per request
     @app.teardown_appcontext

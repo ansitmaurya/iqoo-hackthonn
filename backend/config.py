@@ -27,8 +27,11 @@ class Config:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
-    # CORS Origins
-    cors_env = os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173,http://localhost:5174,http://127.0.0.1:5174,http://localhost:3000")
-    CORS_ORIGINS = [origin.strip() for origin in cors_env.split(",") if origin.strip()]
+    # CORS Origins (Allow all by default or specific comma-separated list)
+    cors_env = os.getenv("CORS_ORIGINS", "*")
+    if cors_env.strip() == "*":
+        CORS_ORIGINS = "*"
+    else:
+        CORS_ORIGINS = [origin.strip() for origin in cors_env.split(",") if origin.strip()]
     
     PORT = int(os.getenv("PORT", 5000))
