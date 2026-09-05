@@ -14,11 +14,22 @@ import rawAccounts from '../data/accounts.json';
 import rawTransactions from '../data/transactions.json';
 import { TransactionSimulator } from '../engine/simulator';
 import type { ForceScenario } from '../engine/simulator';
-import { api, type CreateTransactionPayload } from '../services/api';
+import { type CreateTransactionPayload } from '../services/api';
+import { 
+  type DataSourceMode, 
+  demoDataProvider, 
+  liveDataProvider 
+} from '../services/dataProvider';
 
 const STORAGE_KEY = 'SENTINEL_FLOW_V1_STORE';
+const DATA_SOURCE_KEY = 'TRACEGUARD_DATA_SOURCE_MODE';
 
 interface SentinelStoreState {
+  // Data Source Architecture State
+  dataSourceMode: DataSourceMode;
+  fallbackActive: boolean;
+  fallbackMessage: string | null;
+
   // Core Entities
   accounts: Account[];
   transactions: Transaction[];
@@ -48,7 +59,9 @@ interface SentinelStoreState {
   // Audio Alerts Enabled
   audioEnabled: boolean;
 
-  // Backend Sync & Mutation Actions
+  // Data Source & Backend Sync Actions
+  setDataSourceMode: (mode: DataSourceMode) => Promise<void>;
+  dismissFallbackNotice: () => void;
   syncWithBackend: () => Promise<void>;
   submitTransactionApi: (payload: CreateTransactionPayload) => Promise<{ transaction: Transaction; alert: Alert | null }>;
   setIsIngestModalOpen: (open: boolean) => void;
@@ -217,9 +230,24 @@ function loadInitialState() {
   };
 }
 
+// Load saved mode or default to DEMO
+function loadInitialMode(): DataSourceMode {
+  try {
+    const saved = localStorage.getItem(DATA_SOURCE_KEY);
+    if (saved === 'LIVE' || saved === 'DEMO') {
+      return saved as DataSourceMode;
+    }
+  } catch (_) {}
+  return 'DEMO';
+}
+
 const initialData = loadInitialState();
 
 export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
+  dataSourceMode: loadInitialMode(),
+  fallbackActive: false,
+  fallbackMessage: null,
+
   accounts: initialData.accounts,
   transactions: initialData.transactions,
   alerts: initialData.alerts,
@@ -245,89 +273,132 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
 
   setIsIngestModalOpen: (open: boolean) => set({ isIngestModalOpen: open }),
 
-  // Hydrate store from live Flask + Supabase REST API
-  syncWithBackend: async () => {
-    set({ apiLoading: true, apiError: null });
+  dismissFallbackNotice: () => set({ fallbackMessage: null }),
+
+  // Set and transition between DEMO and LIVE data source modes
+  setDataSourceMode: async (mode: DataSourceMode) => {
     try {
-      const health = await api.checkHealth();
+      localStorage.setItem(DATA_SOURCE_KEY, mode);
+    } catch (_) {}
+
+    if (mode === 'DEMO') {
+      // Switch to Demo Provider immediately
+      const demoAccounts = await demoDataProvider.fetchAccounts();
+      const demoTxs = await demoDataProvider.fetchTransactions({ limit: 100 });
+      const demoAlerts = await demoDataProvider.fetchAlerts({ limit: 50 });
+
+      set({
+        dataSourceMode: 'DEMO',
+        fallbackActive: false,
+        fallbackMessage: null,
+        isApiConnected: false,
+        apiLoading: false,
+        apiError: null,
+        accounts: demoAccounts.length > 0 ? demoAccounts : get().accounts,
+        transactions: demoTxs.data.length > 0 ? demoTxs.data : get().transactions,
+        alerts: demoAlerts.data.length > 0 ? demoAlerts.data : get().alerts
+      });
+      return;
+    }
+
+    // Attempt to switch to LIVE mode
+    set({ dataSourceMode: 'LIVE', apiLoading: true, apiError: null, fallbackActive: false, fallbackMessage: null });
+    
+    try {
+      const health = await liveDataProvider.checkHealth();
       if (health.status === 'online') {
-        const [txsRes, alertsRes] = await Promise.all([
-          api.getTransactions({ limit: 100 }),
-          api.getAlerts({ limit: 50 })
+        const [txsRes, alertsRes, accountsRes] = await Promise.all([
+          liveDataProvider.fetchTransactions({ limit: 100 }),
+          liveDataProvider.fetchAlerts({ limit: 50 }),
+          liveDataProvider.fetchAccounts()
         ]);
 
-        if (txsRes?.data && txsRes.data.length > 0) {
-          set((state) => ({
-            transactions: txsRes.data,
-            alerts: alertsRes?.data && alertsRes.data.length > 0 ? alertsRes.data : state.alerts,
-            isApiConnected: true,
-            apiLoading: false,
-            apiError: null
-          }));
-          return;
-        }
+        set((state) => ({
+          dataSourceMode: 'LIVE',
+          fallbackActive: false,
+          fallbackMessage: null,
+          isApiConnected: true,
+          apiLoading: false,
+          apiError: null,
+          accounts: accountsRes && accountsRes.length > 0 ? accountsRes : state.accounts,
+          transactions: txsRes?.data && txsRes.data.length > 0 ? txsRes.data : state.transactions,
+          alerts: alertsRes?.data && alertsRes.data.length > 0 ? alertsRes.data : state.alerts
+        }));
+      } else {
+        throw new Error('Backend returned non-online status');
       }
-      set({ isApiConnected: true, apiLoading: false });
     } catch (err: any) {
-      // Backend not running yet or unreachable -> keep fallback in-memory state smoothly
-      set({ isApiConnected: false, apiLoading: false, apiError: err.message });
+      // Backend unavailable -> trigger automatic fallback to Demo data with non-intrusive banner
+      console.warn('[TraceGuard] LIVE mode backend unreachable. Activating Demo data fallback:', err.message);
+      
+      const demoAccounts = await demoDataProvider.fetchAccounts();
+      const demoTxs = await demoDataProvider.fetchTransactions({ limit: 100 });
+      const demoAlerts = await demoDataProvider.fetchAlerts({ limit: 50 });
+
+      set((state) => ({
+        dataSourceMode: 'LIVE',
+        fallbackActive: true,
+        fallbackMessage: 'API unavailable — Demo data active',
+        isApiConnected: false,
+        apiLoading: false,
+        apiError: err.message,
+        accounts: state.accounts.length > 0 ? state.accounts : demoAccounts,
+        transactions: state.transactions.length > 0 ? state.transactions : demoTxs.data,
+        alerts: state.alerts.length > 0 ? state.alerts : demoAlerts.data
+      }));
     }
   },
 
-  // Submit transaction to live backend, evaluate risk, persist and update store
-  submitTransactionApi: async (payload: CreateTransactionPayload) => {
-    try {
-      const result = await api.createTransaction(payload);
-      const { transaction: tx, alert } = result;
-
-      // Ingest into local store and state
-      get().ingestTransaction(tx);
-
-      if (alert) {
-        set((state) => ({
-          alerts: [alert, ...state.alerts.filter(a => a.id !== alert.id)],
-          recentNewAlertIds: [alert.id, ...state.recentNewAlertIds.slice(0, 4)]
-        }));
-      }
-
-      return result;
-    } catch (err) {
-      console.warn('Backend offline or unreachable, falling back to local simulation:', err);
-      // If offline, fallback to in-memory evaluation
-      const mockTx: Transaction = {
-        id: `TX-${Math.floor(100000 + Math.random() * 900000)}`,
-        accountId: payload.sender,
-        accountName: payload.sender_name || payload.sender,
-        recipientId: payload.receiver,
-        recipientName: payload.receiver_name || payload.receiver,
-        amount: payload.amount,
-        currency: payload.currency || 'USD',
-        type: (payload.type as any) || 'TRANSFER',
-        category: (payload.category as any) || 'PEER_TRANSFER',
-        timestamp: new Date().toISOString(),
-        location: payload.location || {
-          city: 'New York',
-          country: 'US',
-          latitude: 40.7128,
-          longitude: -74.006,
-          ipAddress: '198.51.100.42'
-        },
-        device: payload.device || {
-          deviceId: 'DEV-OFFLINE',
-          browser: 'Chrome',
-          os: 'Windows',
-          isKnownDevice: true,
-          userAgent: 'TraceGuard/2.0'
-        },
-        riskScore: payload.amount > 50000 ? 88 : payload.amount > 10000 ? 65 : 15,
-        riskLevel: payload.amount > 50000 ? 'CRITICAL' : payload.amount > 10000 ? 'HIGH' : 'LOW',
-        triggeredRules: [],
-        flagged: payload.amount > 10000,
-        status: payload.amount > 50000 ? 'BLOCKED' : 'SETTLED'
-      };
-      get().ingestTransaction(mockTx);
-      return { transaction: mockTx, alert: null };
+  // Hydrate store from active provider or check live backend
+  syncWithBackend: async () => {
+    const currentMode = get().dataSourceMode;
+    if (currentMode === 'DEMO') {
+      // DEMO mode: Keep using prototype state smoothly
+      set({ isApiConnected: false, apiLoading: false, fallbackActive: false });
+      return;
     }
+
+    // LIVE mode: check live backend
+    await get().setDataSourceMode('LIVE');
+  },
+
+  // Submit transaction to active data provider
+  submitTransactionApi: async (payload: CreateTransactionPayload) => {
+    const { dataSourceMode, fallbackActive } = get();
+
+    if (dataSourceMode === 'LIVE' && !fallbackActive) {
+      try {
+        const result = await liveDataProvider.createTransaction(payload);
+        const { transaction: tx, alert } = result;
+
+        get().ingestTransaction(tx);
+
+        if (alert) {
+          set((state) => ({
+            alerts: [alert, ...state.alerts.filter(a => a.id !== alert.id)],
+            recentNewAlertIds: [alert.id, ...state.recentNewAlertIds.slice(0, 4)]
+          }));
+        }
+
+        return result;
+      } catch (err: any) {
+        console.warn('Live transaction ingestion failed, activating fallback demo ingestion:', err);
+        set({ fallbackActive: true, fallbackMessage: 'API transaction failed — Demo mode activated' });
+      }
+    }
+
+    // Demo Data Provider Ingestion
+    const demoResult = await demoDataProvider.createTransaction(payload);
+    get().ingestTransaction(demoResult.transaction);
+
+    if (demoResult.alert) {
+      set((state) => ({
+        alerts: [demoResult.alert!, ...state.alerts.filter(a => a.id !== demoResult.alert!.id)],
+        recentNewAlertIds: [demoResult.alert!.id, ...state.recentNewAlertIds.slice(0, 4)]
+      }));
+    }
+
+    return demoResult;
   },
 
   startSimulation: () => {
@@ -494,9 +565,9 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
   },
 
   updateAlertStatus: (alertId: string, status: AlertStatus, resolutionSummary?: string) => {
-    // Optionally fire API update in background
-    if (get().isApiConnected) {
-      api.updateAlert(alertId, { status, resolutionSummary }).catch(() => {});
+    const { dataSourceMode, isApiConnected } = get();
+    if (dataSourceMode === 'LIVE' && isApiConnected) {
+      liveDataProvider.updateAlert(alertId, { status, resolutionSummary }).catch(() => {});
     }
 
     set((state) => {
@@ -529,8 +600,9 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
   },
 
   assignAlertAnalyst: (alertId: string, analystName: string) => {
-    if (get().isApiConnected) {
-      api.updateAlert(alertId, { assignedAnalyst: analystName }).catch(() => {});
+    const { dataSourceMode, isApiConnected } = get();
+    if (dataSourceMode === 'LIVE' && isApiConnected) {
+      liveDataProvider.updateAlert(alertId, { assignedAnalyst: analystName }).catch(() => {});
     }
 
     set((state) => {
@@ -542,8 +614,9 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
   },
 
   addAlertNote: (alertId: string, author: string, content: string) => {
-    if (get().isApiConnected) {
-      api.updateAlert(alertId, { note: content, author }).catch(() => {});
+    const { dataSourceMode, isApiConnected } = get();
+    if (dataSourceMode === 'LIVE' && isApiConnected) {
+      liveDataProvider.updateAlert(alertId, { note: content, author }).catch(() => {});
     }
 
     set((state) => {
@@ -755,7 +828,9 @@ export const useSentinelStore = create<SentinelStoreState>((set, get) => ({
       selectedAlertId: null,
       selectedTxId: null,
       selectedAccountId: null,
-      selectedInvestigationId: null
+      selectedInvestigationId: null,
+      fallbackActive: false,
+      fallbackMessage: null
     });
   },
 

@@ -1,40 +1,40 @@
 import json
-import urllib.request
+import os
+import sys
 
-BASE_URL = "http://127.0.0.1:5000/api"
+# Ensure backend folder is in python path
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
-def make_request(path, method="GET", data=None):
-    url = f"{BASE_URL}{path}"
-    headers = {"Content-Type": "application/json"}
-    body = json.dumps(data).encode("utf-8") if data else None
-    req = urllib.request.Request(url, data=body, headers=headers, method=method)
-    try:
-        with urllib.request.urlopen(req) as resp:
-            status = resp.status
-            res_body = json.loads(resp.read().decode("utf-8"))
-            return status, res_body
-    except urllib.error.HTTPError as e:
-        return e.code, json.loads(e.read().decode("utf-8"))
+from app import create_app
 
-def run_tests():
-    print("Testing TraceGuard API Endpoints...")
+def run_in_process_tests():
+    print("Testing TraceGuard API Endpoints with Flask Test Client...")
+    app = create_app()
+    app.config['TESTING'] = True
+    client = app.test_client()
 
-    # 1. Health
-    status, body = make_request("/health")
-    print(f"1. GET /health -> HTTP {status}, status={body.get('status')}")
-    assert status == 200
+    # 1. Health Endpoint
+    res = client.get('/api/health')
+    assert res.status_code == 200, f"Health check failed: {res.status_code}"
+    body = res.get_json()
+    print(f"1. GET /api/health -> HTTP {res.status_code}, status={body.get('status')}, service={body.get('service')}")
+    assert body.get('status') == 'online'
 
-    # 2. Dashboard
-    status, body = make_request("/dashboard")
-    print(f"2. GET /dashboard -> HTTP {status}, totalProcessed={body['data']['totalProcessedCount']}, openAlerts={body['data']['openAlertsCount']}")
-    assert status == 200
+    # 2. Dashboard Endpoint
+    res = client.get('/api/dashboard')
+    assert res.status_code == 200, f"Dashboard failed: {res.status_code}"
+    body = res.get_json()
+    print(f"2. GET /api/dashboard -> HTTP {res.status_code}, totalProcessed={body['data']['totalProcessedCount']}, openAlerts={body['data']['openAlertsCount']}")
+    assert 'totalProcessedCount' in body['data']
 
     # 3. Transactions List
-    status, body = make_request("/transactions?limit=5")
-    print(f"3. GET /transactions -> HTTP {status}, returned {len(body['data'])} records, total={body['pagination']['total']}")
-    assert status == 200 and len(body['data']) > 0
+    res = client.get('/api/transactions?limit=5')
+    assert res.status_code == 200, f"Transactions list failed: {res.status_code}"
+    body = res.get_json()
+    print(f"3. GET /api/transactions -> HTTP {res.status_code}, returned {len(body['data'])} records, total={body['pagination']['total']}")
+    assert len(body['data']) > 0
 
-    # 4. POST High-Risk Transaction (testing risk engine & alert generation)
+    # 4. POST High-Risk Transaction (Risk Engine & Auto-Alert Test)
     high_risk_tx = {
         "sender": "ACC-10000",
         "sender_name": "Apex Capital Ltd",
@@ -52,34 +52,44 @@ def run_tests():
             "ipAddress": "185.220.101.5"
         }
     }
-    status, body = make_request("/transactions", method="POST", data=high_risk_tx)
+    res = client.post('/api/transactions', json=high_risk_tx)
+    assert res.status_code == 201, f"POST /api/transactions failed: {res.status_code} - {res.get_data(as_text=True)}"
+    body = res.get_json()
     tx_data = body["data"]["transaction"]
     alert_data = body["data"]["alert"]
-    print(f"4. POST /transactions -> HTTP {status}, TX_ID={tx_data['id']}, RiskScore={tx_data['riskScore']}/100, RiskLevel={tx_data['riskLevel']}, AlertCreated={alert_data is not None}")
-    assert status == 201 and alert_data is not None
+    print(f"4. POST /api/transactions -> HTTP {res.status_code}, TX_ID={tx_data['id']}, RiskScore={tx_data['riskScore']}/100, RiskLevel={tx_data['riskLevel']}, AlertCreated={alert_data is not None}")
+    assert tx_data['riskScore'] > 60
+    assert alert_data is not None
 
     # 5. GET Alerts
-    status, body = make_request("/alerts?limit=5")
-    print(f"5. GET /alerts -> HTTP {status}, returned {len(body['data'])} alerts, first_id={body['data'][0]['id']}")
-    assert status == 200 and len(body['data']) > 0
-
+    res = client.get('/api/alerts?limit=5')
+    assert res.status_code == 200, f"Alerts query failed: {res.status_code}"
+    body = res.get_json()
+    print(f"5. GET /api/alerts -> HTTP {res.status_code}, returned {len(body['data'])} alerts, first_id={body['data'][0]['id']}")
+    assert len(body['data']) > 0
     first_alert_id = body['data'][0]['id']
 
-    # 6. PUT Alert
-    status, body = make_request(f"/alerts/{first_alert_id}", method="PUT", data={
+    # 6. PUT Alert (Triage, Analyst Assignment & Note)
+    res = client.put(f'/api/alerts/{first_alert_id}', json={
         "status": "IN_REVIEW",
         "assignedAnalyst": "Analyst Sarah (SecOps)",
         "note": "Investigating high-value crypto egress anomaly."
     })
-    print(f"6. PUT /alerts/{first_alert_id} -> HTTP {status}, new_status={body['data']['status']}, notes_count={len(body['data']['notes'])}")
-    assert status == 200
+    assert res.status_code == 200, f"Alert update failed: {res.status_code}"
+    body = res.get_json()
+    print(f"6. PUT /api/alerts/{first_alert_id} -> HTTP {res.status_code}, new_status={body['data']['status']}, notes_count={len(body['data']['notes'])}")
+    assert body['data']['status'] == 'IN_REVIEW'
 
-    # 7. Network Graph
-    status, body = make_request("/network")
-    print(f"7. GET /network -> HTTP {status}, nodes_count={len(body['data']['nodes'])}, links_count={len(body['data']['links'])}")
-    assert status == 200 and len(body['data']['nodes']) > 0
+    # 7. Network Graph Topology
+    res = client.get('/api/network')
+    assert res.status_code == 200, f"Network query failed: {res.status_code}"
+    body = res.get_json()
+    print(f"7. GET /api/network -> HTTP {res.status_code}, nodes_count={len(body['data']['nodes'])}, links_count={len(body['data']['links'])}")
+    assert len(body['data']['nodes']) > 0
 
-    print("ALL API ENDPOINT TESTS PASSED SUCCESSFULLY!")
+    print("\n=======================================================")
+    print("ALL TRACEGUARD BACKEND API ENDPOINTS TESTED AND PASSED!")
+    print("=======================================================\n")
 
-if __name__ == "__main__":
-    run_tests()
+if __name__ == '__main__':
+    run_in_process_tests()
